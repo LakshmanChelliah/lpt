@@ -1,0 +1,283 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap');
+/* ===== Global Reset ===== */
+* {
+  box-sizing: border-box;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: #e5e7eb;
+  background: #050708;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: -15%;
+  z-index: -1;
+
+  background:
+    radial-gradient(
+      900px 600px at 75% 20%,
+      rgba(31, 170, 89, 0.65),
+      rgba(31, 170, 89, 0.3) 35%,
+      transparent 70%
+    ),
+    radial-gradient(
+      700px 500px at 20% 60%,
+      rgba(22, 120, 70, 0.45),
+      rgba(10, 40, 25, 0.45) 40%,
+      transparent 75%
+    ),
+    linear-gradient(
+      130deg,
+      rgba(0,0,0,0.95),
+      rgba(0,0,0,0.6),
+      rgba(0,0,0,0.95)
+    ),
+    repeating-radial-gradient(
+      circle,
+      rgba(255,255,255,0.08) 0,
+      rgba(255,255,255,0.08) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+
+  background-blend-mode:
+    screen,
+    screen,
+    multiply,
+    overlay;
+
+  animation: smoothLightDrift 20s linear infinite;
+
+  will-change: transform;
+}
+
+
+
+@keyframes smoothLightDrift {
+  0% {
+    transform: translate(0, 0) scale(1.05);
+    filter: brightness(1.05) contrast(1.05);
+  }
+
+  25% {
+    transform: translate(-3%, -2%) scale(1.08);
+  }
+
+  50% {
+    transform: translate(2%, -4%) scale(1.1);
+    filter: brightness(1.2) contrast(1.15);
+  }
+
+  75% {
+    transform: translate(4%, 2%) scale(1.08);
+  }
+
+  100% {
+    transform: translate(0, 0) scale(1.05);
+    filter: brightness(1.05) contrast(1.05);
+  }
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: -20%;
+  z-index: -2;
+
+  background:
+    radial-gradient(
+      800px 500px at 60% 40%,
+      rgba(31,170,89,0.25),
+      transparent 70%
+    );
+
+  animation: slowDrift 40s linear infinite;
+}
+
+@keyframes slowDrift {
+  from { transform: translate(0,0) scale(1); }
+  to { transform: translate(-6%, 4%) scale(1.15); }
+}
+
+
+
+
+/* ===== Header ===== */
+header {
+  text-align: center;
+  padding: 60px 20px;
+  background:
+    linear-gradient(180deg, rgba(26,31,36,0.95), rgba(10,13,16,0.95));
+  box-shadow:
+    inset 0 -1px 0 rgba(255,255,255,0.05),
+    0 10px 30px rgba(0,0,0,0.6);
+}
+
+
+
+header h1 {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 5rem;
+  letter-spacing: 2px;
+  text-shadow:
+    0 5px 0 rgba(0,0,0,0.9),
+    0 5px 300px rgba(31,170,89,0.6);
+}
+
+header p {
+  margin: 6px 0;
+  opacity: 0.95;
+}
+
+/* ===== Layout ===== */
+main {
+  max-width: 720px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+
+/* ===== Tabs ===== */
+.tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.tab-btn {
+  padding: 10px 20px;
+  background: linear-gradient(180deg, #1e2329, #151a1f);
+  color: #e5e7eb;
+  border: 1px solid #2b3239;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+.tab-btn.active {
+  background: linear-gradient(180deg, #26b565, #1faa59);
+  color: #061309;
+  border: none;
+  box-shadow:
+    0 6px 18px rgba(31,170,89,0.6),
+    inset 0 1px 0 rgba(255,255,255,0.35);
+}
+
+/* ===== Card Sections ===== */
+section {
+  background:
+    linear-gradient(180deg, #151a1f, #0e1216);
+  padding: 30px;
+  border-radius: 16px;
+
+  /* Floating card effect */
+  box-shadow:
+    0 25px 50px rgba(0,0,0,0.75),
+    inset 0 1px 0 rgba(255,255,255,0.04);
+
+  border: 1px solid #1f252b;
+}
+
+section h2 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  
+}
+
+/* ===== Form Fields ===== */
+.form-group {
+  margin-bottom: 18px;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+
+  /* Inset / pressed look */
+  background: #090c10;
+  border: 1px solid #2a3138;
+  color: #ffffff;
+
+  box-shadow:
+    inset 0 2px 6px rgba(0,0,0,0.8),
+    inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #1faa59;
+}
+
+/* ===== CTA Button ===== */
+button[type="submit"] {
+  width: 100%;
+  padding: 16px;
+  border-radius: 10px;
+  font-size: 1.05rem;
+  font-weight: 700;
+
+  background: linear-gradient(180deg, #2bd173, #1faa59);
+  color: #04140a;
+  border: none;
+  cursor: pointer;
+
+  /* TRUE 3D */
+  box-shadow:
+    0 12px 30px rgba(31,170,89,0.7),
+    inset 0 1px 0 rgba(255,255,255,0.4);
+}
+
+button[type="submit"]:active {
+  transform: translateY(2px);
+  box-shadow:
+    0 6px 16px rgba(31,170,89,0.6),
+    inset 0 2px 6px rgba(0,0,0,0.4);
+}
+
+/* ===== About Image ===== */
+.about-image {
+  margin-bottom: 20px;
+}
+
+.about-image img {
+  width: 100%;
+  border-radius: 14px;
+  box-shadow:
+    0 20px 40px rgba(0,0,0,0.7);
+    
+}
+
+/* ===== Payment Screen Highlight ===== */
+#payment-screen {
+  border: 2px solid #a33;
+  background:
+    linear-gradient(180deg, #1b0d0d, #120707);
+}
+
+/* ===== Footer ===== */
+footer {
+  text-align: center;
+  padding: 30px;
+  color: #9ca3af;
+}
+
+footer a {
+  color: #1faa59;
+  text-decoration: none;
+}
+

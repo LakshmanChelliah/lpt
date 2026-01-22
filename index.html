@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event Registration</title>
+    <!-- Simple styling for layout -->
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="android-chrome-512x512.png">
+
+</head>
+<body>
+    <header>
+
+        <h1 id="event-name">LPT 6</h1>
+        <p id="event-description">6th Ever Laksh Poker Tournament Registration</p>
+        <p id="event-date">Date: <strong>Sunday, January 25th 2:00pm</strong></p>
+        <p id="spots-remaining" style="font-weight:bold;">
+            Spots remaining: <span id="spots-count">Loading…</span>
+        </p>
+        <p id="registration-timer" style="font-weight:bold; color:rgb(0, 112, 24);">
+            Registration closes in: <span id="countdown">Loading…</span>
+        </p>
+    </header>
+
+    <main>
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="registration">Register</button>
+            <button class="tab-btn" data-tab="about">About</button>
+        </div>
+        <!-- REGISTRATION FORM -->
+        <section id="registration">
+            <h2>Register</h2>
+            <p>
+                Please fill out the form below to sign up. All fields are required except the referral.
+                Selecting a re-buy option will affect your fee.
+            </p>
+
+            <form id="registration-form">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="Name" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="Email" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone number:</label>
+                    <input type="tel" id="phone" name="Phone" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="fee">Select your fee:</label>
+                    <select id="fee" name="Fee" required>
+                        <option value="60">$60 Registration</option>
+                        <option value="80">$80 Registration + re-buy</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="referral">Who referred you? (optional)</label>
+                    <input
+                        type="text"
+                        id="referral"
+                        name="Referral"
+                        placeholder="Name or email of person who referred you"
+                    />
+                    <small>If you are not a new player, you can leave this blank or type “N/A”.</small>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit">Register &amp; Checkout</button>
+                    <p id="loading-text" style="display:none; margin-top:10px;">
+                        ⏳ Submitting your registration, please wait...
+                    </p>
+                </div>
+            </form>
+        </section>
+
+        <section id="about" style="display:none;">
+            <h2>About the Event</h2>
+
+            <!-- 16:9 image container -->
+            <div class="about-image">
+                <img src="about-image.png" alt="Event description image">
+            </div>
+
+            <p>
+                LPT 6 is the sixth edition of the Laksh Poker Tournament, bringing together
+                friends and competitive players for an organized, high-quality home tournament.
+                Expect structured play, good vibes, and a well-run event.
+            </p>
+
+            <p>
+                Food, re-buys, and prizes are all part of the experience. Registration is limited,
+                so make sure to secure your spot early.
+            </p>
+        </section>
+
+        <!-- IMMEDIATE PAYMENT SCREEN (NON-SKIPPABLE) -->
+        <section id="payment-screen" style="display:none;">
+            <h2 style="color:red;">⚠️ Action Required: Payment</h2>
+
+            <p>
+                <strong>Your spot is NOT confirmed until payment is received.</strong>
+            </p>
+
+            <p style="font-size:1.5em; font-weight:bold;">
+                Amount to send:
+                <span id="pay-amount">$0</span>
+            </p>
+
+            <p>
+                Send e-transfer to:
+                <strong id="pay-email">lakshman.chelliah@gmail.com</strong>
+                <button type="button" onclick="copyText('pay-email')">Copy</button>
+            </p>
+
+            <p>
+                Message / Reference:
+                <strong id="pay-ref"></strong>
+                <button type="button" onclick="copyText('pay-ref')">Copy</button>
+            </p>
+
+            <p style="margin-top:20px; font-weight:bold;">
+                Please send your e-transfer <u>now</u> to secure your seat.
+            </p>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>
+            Need help?
+            Contact us at
+            <a href="mailto:thishitdonotwork@example.com">thishitdonotwork@example.com</a>.
+        </p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
