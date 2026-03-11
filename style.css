@@ -9,7 +9,7 @@ body {
   margin: 0;
   min-height: 100vh;
   color: #e5e7eb;
-  background: #050708;
+  background: #030711;
   position: relative;
   overflow-x: hidden;
 }
@@ -23,14 +23,14 @@ body::before {
   background:
     radial-gradient(
       900px 600px at 75% 20%,
-      rgba(31, 170, 89, 0.65),
-      rgba(31, 170, 89, 0.3) 35%,
+      rgba(62, 232, 176, 0.7),
+      rgba(62, 232, 176, 0.3) 35%,
       transparent 70%
     ),
     radial-gradient(
       700px 500px at 20% 60%,
-      rgba(22, 120, 70, 0.45),
-      rgba(10, 40, 25, 0.45) 40%,
+      rgba(34, 144, 184, 0.45),
+      rgba(8, 32, 44, 0.5) 40%,
       transparent 75%
     ),
     linear-gradient(
@@ -94,7 +94,7 @@ body::after {
   background:
     radial-gradient(
       800px 500px at 60% 40%,
-      rgba(31,170,89,0.25),
+      rgba(62,232,176,0.25),
       transparent 70%
     );
 
@@ -112,34 +112,32 @@ body::after {
 /* ===== Header ===== */
 header {
   text-align: center;
-  padding: 60px 20px;
-  background:
-    linear-gradient(180deg, rgba(26,31,36,0.95), rgba(10,13,16,0.95));
-  box-shadow:
-    inset 0 -1px 0 rgba(255,255,255,0.05),
-    0 10px 30px rgba(0,0,0,0.6);
+  padding: 32px 20px 24px;
+  background: #030711;
+  border-bottom: 1px solid rgba(148,163,184,0.15);
 }
 
 
 
 header h1 {
-  font-family: 'Archivo Black', sans-serif;
-  font-size: 5rem;
-  letter-spacing: 2px;
-  text-shadow:
-    0 5px 0 rgba(0,0,0,0.9),
-    0 5px 300px rgba(31,170,89,0.6);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 2.25rem;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  text-shadow: none;
+  margin: 0 0 4px;
 }
 
 header p {
-  margin: 6px 0;
-  opacity: 0.95;
+  margin: 2px 0;
+  opacity: 0.9;
+  font-size: 0.95rem;
 }
 
 /* ===== Layout ===== */
 main {
   max-width: 720px;
-  margin: 50px auto;
+  margin: 32px auto 48px;
   padding: 0 20px;
 }
 
@@ -152,7 +150,7 @@ main {
 
 .tab-btn {
   padding: 10px 20px;
-  background: linear-gradient(180deg, #1e2329, #151a1f);
+  background: linear-gradient(180deg, #111827, #020617);
   color: #e5e7eb;
   border: 1px solid #2b3239;
   border-radius: 8px;
@@ -161,18 +159,18 @@ main {
 }
 
 .tab-btn.active {
-  background: linear-gradient(180deg, #26b565, #1faa59);
-  color: #061309;
+  background: linear-gradient(135deg, #3be8b0, #22c1c3);
+  color: #020617;
   border: none;
   box-shadow:
-    0 6px 18px rgba(31,170,89,0.6),
+    0 8px 24px rgba(34,193,195,0.7),
     inset 0 1px 0 rgba(255,255,255,0.35);
 }
 
 /* ===== Card Sections ===== */
 section {
   background:
-    linear-gradient(180deg, #151a1f, #0e1216);
+    linear-gradient(180deg, #020617, #020617);
   padding: 30px;
   border-radius: 16px;
 
@@ -208,7 +206,7 @@ select {
   border-radius: 8px;
 
   /* Inset / pressed look */
-  background: #090c10;
+  background: #020617;
   border: 1px solid #2a3138;
   color: #ffffff;
 
@@ -220,7 +218,7 @@ select {
 input:focus,
 select:focus {
   outline: none;
-  border-color: #1faa59;
+  border-color: #3be8b0;
 }
 
 /* ===== CTA Button ===== */
@@ -231,14 +229,14 @@ button[type="submit"] {
   font-size: 1.05rem;
   font-weight: 700;
 
-  background: linear-gradient(180deg, #2bd173, #1faa59);
-  color: #04140a;
+  background: linear-gradient(135deg, #3be8b0, #22c1c3);
+  color: #020617;
   border: none;
   cursor: pointer;
 
   /* TRUE 3D */
   box-shadow:
-    0 12px 30px rgba(31,170,89,0.7),
+    0 12px 30px rgba(34,193,195,0.7),
     inset 0 1px 0 rgba(255,255,255,0.4);
 }
 
@@ -264,9 +262,9 @@ button[type="submit"]:active {
 
 /* ===== Payment Screen Highlight ===== */
 #payment-screen {
-  border: 2px solid #a33;
+  border: 2px solid #ef4444;
   background:
-    linear-gradient(180deg, #1b0d0d, #120707);
+    linear-gradient(180deg, #1f0a0a, #110404);
 }
 
 /* ===== Footer ===== */
@@ -277,7 +275,7 @@ footer {
 }
 
 footer a {
-  color: #1faa59;
+  color: #3be8b0;
   text-decoration: none;
 }
 

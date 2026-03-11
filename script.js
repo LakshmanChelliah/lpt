@@ -1,11 +1,49 @@
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzOMjf8VX2qoPcAaRX_dNjA1qrz47baiNDzeLAJlelRpxCdX2tpS6nsvlVLgSnPdgAk1A/exec';
-const REGISTRATION_DEADLINE = new Date('2026-01-24T21:00:00');
-const MAX_SPOTS = 20;
+const EVENT = window.EVENT_CONFIG || {};
+const SCRIPT_URL =
+  EVENT.scriptUrl ||
+  'https://script.google.com/macros/s/AKfycbzOMjf8VX2qoPcAaRX_dNjA1qrz47baiNDzeLAJlelRpxCdX2tpS6nsvlVLgSnPdgAk1A/exec';
+const REGISTRATION_DEADLINE = new Date(EVENT.registrationDeadline || '2026-03-21T19:00:00');
+const MAX_SPOTS = EVENT.maxSpots || 20;
 
 document.addEventListener('DOMContentLoaded', () => {
   const countdownEl = document.getElementById('countdown');
   const form = document.getElementById('registration-form');
   const submitBtn = form.querySelector('button[type="submit"]');
+  const feeSelect = document.getElementById('fee');
+
+  // -------- APPLY CONFIG TO UI --------
+  if (EVENT.name) {
+    const nameEl = document.getElementById('event-name');
+    if (nameEl) nameEl.innerText = EVENT.name;
+  }
+
+  if (EVENT.editionLabel) {
+    const descEl = document.getElementById('event-description');
+    if (descEl) descEl.innerText = EVENT.editionLabel;
+  }
+
+  if (EVENT.dateDisplay) {
+    const dateEl = document.getElementById('event-date');
+    if (dateEl) {
+      const strong = dateEl.querySelector('strong');
+      if (strong) strong.innerText = EVENT.dateDisplay;
+    }
+  }
+
+  if (EVENT.paymentEmail) {
+    const payEmailEl = document.getElementById('pay-email');
+    if (payEmailEl) payEmailEl.innerText = EVENT.paymentEmail;
+  }
+
+  if (Array.isArray(EVENT.fees) && feeSelect) {
+    feeSelect.innerHTML = '';
+    EVENT.fees.forEach(fee => {
+      const opt = document.createElement('option');
+      opt.value = String(fee.value);
+      opt.textContent = fee.label;
+      feeSelect.appendChild(opt);
+    });
+  }
 
     // -------- TAB SWITCHING --------
     document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -110,9 +148,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const phone = document.getElementById('phone').value;
     const fee = document.getElementById('fee').value;
     const referral = document.getElementById('referral').value || '';
-    const amount = fee === '80' ? 80 : 60;
+    let amount = 60;
+    if (Array.isArray(EVENT.fees)) {
+      const feeConfig = EVENT.fees.find(f => String(f.value) === fee);
+      if (feeConfig && typeof feeConfig.amount === 'number') {
+        amount = feeConfig.amount;
+      }
+    } else if (fee === '80') {
+      amount = 80;
+    }
 
-    const reference = `LPT 6 – ${name}`;
+    const referencePrefix = EVENT.referencePrefix || 'LPT 7';
+    const reference = `${referencePrefix} – ${name}`;
 
     const payload = new URLSearchParams({
       Name: name,
