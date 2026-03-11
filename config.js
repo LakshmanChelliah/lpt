@@ -4,7 +4,7 @@ window.EVENT_CONFIG = {
   dateDisplay: 'Saturday, March 21st 7:00pm',
 
   // Registration settings
-  registrationDeadline: '2026-03-21T19:00:00', // Local time: March 21, 2026 7:00 PM
+  registrationDeadline: '2026-03-20T23:59:00', // Local time: March 20, 2026 11:59 PM
   maxSpots: 20,
 
   // Fee options shown in the select dropdown
