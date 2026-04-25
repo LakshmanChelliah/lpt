@@ -2,7 +2,7 @@ const EVENT = window.EVENT_CONFIG || {};
 const SCRIPT_URL =
   EVENT.scriptUrl ||
   'https://script.google.com/macros/s/AKfycbzOMjf8VX2qoPcAaRX_dNjA1qrz47baiNDzeLAJlelRpxCdX2tpS6nsvlVLgSnPdgAk1A/exec';
-const REGISTRATION_DEADLINE = new Date(EVENT.registrationDeadline || '2026-03-21T19:00:00');
+const REGISTRATION_DEADLINE = new Date(EVENT.registrationDeadline || '2026-05-01T23:59:00');
 const MAX_SPOTS = EVENT.maxSpots || 20;
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -125,12 +125,10 @@ document.addEventListener('DOMContentLoaded', () => {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const spotsLeft = parseInt(
-      document.getElementById('spots-count').innerText,
-      10
-    );
-
-    if (isNaN(spotsLeft) || spotsLeft <= 0) {
+    const spotsText = document.getElementById('spots-count').innerText.trim();
+    const spotsLeft = parseInt(spotsText, 10);
+    // Only block when we actually got a number from the server (not "Loading…", "—", etc.)
+    if (spotsText === 'SOLD OUT' || (!isNaN(spotsLeft) && spotsLeft <= 0)) {
       alert('Registration is sold out.');
       return;
     }
@@ -158,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
       amount = 80;
     }
 
-    const referencePrefix = EVENT.referencePrefix || 'LPT 7';
+    const referencePrefix = EVENT.referencePrefix || 'LPT 8';
     const reference = `${referencePrefix} – ${name}`;
 
     const payload = new URLSearchParams({
@@ -170,10 +168,44 @@ document.addEventListener('DOMContentLoaded', () => {
       Referral: referral
     });
 
-    await fetch(SCRIPT_URL, {
-      method: 'POST',
-      body: payload
-    });
+    let postRes;
+    try {
+      postRes = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: payload,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+        }
+      });
+    } catch (err) {
+      submitBtn.disabled = false;
+      submitBtn.innerText = 'Register & Checkout';
+      alert(
+        'Could not reach the registration server (network/CORS). Open DevTools → Network, retry, and confirm your Web App URL in config.js.'
+      );
+      return;
+    }
+
+    let postJson = null;
+    try {
+      postJson = JSON.parse(await postRes.text());
+    } catch (_) {
+      postJson = null;
+    }
+
+    if (!postRes.ok || !postJson || postJson.result !== 'success') {
+      submitBtn.disabled = false;
+      submitBtn.innerText = 'Register & Checkout';
+      const errMsg =
+        postJson && postJson.error
+          ? String(postJson.error)
+          : 'Registration failed (HTTP ' + postRes.status + ').';
+      alert(
+        errMsg +
+          '\n\nTypical fixes: Deploy the Apps Script as a Web app (Execute as: you, Who has access: Anyone), then Manage deployments → edit → New version. Ensure the sheet tab name matches Code.gs (e.g. LPT8) and initialSetup() was run on that spreadsheet.'
+      );
+      return;
+    }
 
     document.getElementById('registration').style.display = 'none';
     document.getElementById('pay-amount').innerText = `$${amount}`;
