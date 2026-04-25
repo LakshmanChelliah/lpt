@@ -1,7 +1,7 @@
 window.EVENT_CONFIG = {
   name: 'LPT 8',
   editionLabel: '8th Ever Laksh Poker Tournament Registration',
-  dateDisplay: 'Saturday, March 21st 7:00pm',
+  dateDisplay: 'Saturday May 2nd 7:00pm',
 
   // Registration settings
   registrationDeadline: '2026-05-01T23:59:00', // Local time: May 1, 2026 11:59 PM

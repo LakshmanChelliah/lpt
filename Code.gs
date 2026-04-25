@@ -9,7 +9,7 @@ const PRIOR_SHEETS_FOR_MAILING = ['LPT6'];
 
 const LPT_EDITION = 'LPT 8';
 const SITE_URL = 'https://lakshmanchelliah.github.io/lpt/';
-const LPT_EVENT_DATE_LINE = 'Saturday, March 21st at 7:00pm';
+const LPT_EVENT_DATE_LINE = 'Saturday May 2nd at 7:00pm';
 const LPT_MAX_PLAYERS = 20;
 const LPT_REGISTRATION_DEADLINE_LINE = 'Friday, May 1st, 2026 11:59pm';
 /** Shown in the “registration is LIVE” subject line (matches registration close). */
