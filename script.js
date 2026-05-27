@@ -2,7 +2,7 @@ const EVENT = window.EVENT_CONFIG || {};
 const SCRIPT_URL =
   EVENT.scriptUrl ||
   'https://script.google.com/macros/s/AKfycbzOMjf8VX2qoPcAaRX_dNjA1qrz47baiNDzeLAJlelRpxCdX2tpS6nsvlVLgSnPdgAk1A/exec';
-const REGISTRATION_DEADLINE = new Date(EVENT.registrationDeadline || '2026-05-01T23:59:00');
+const REGISTRATION_DEADLINE = new Date(EVENT.registrationDeadline || '2026-05-29T23:59:00');
 const MAX_SPOTS = EVENT.maxSpots || 20;
 
 document.addEventListener('DOMContentLoaded', () => {
