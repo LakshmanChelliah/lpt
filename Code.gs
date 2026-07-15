@@ -3,17 +3,17 @@
  * website and append them to a Google Sheet.
  */
 
-const sheetName = 'LPT8';
+const sheetName = 'LPT9';
 /** Past-player tab for mail merge (normalized list lives only on LPT6). */
 const PRIOR_SHEETS_FOR_MAILING = ['LPT6'];
 
-const LPT_EDITION = 'LPT 8';
+const LPT_EDITION = 'LPT 9';
 const SITE_URL = 'https://lakshmanchelliah.github.io/lpt/';
-const LPT_EVENT_DATE_LINE = 'Saturday May 30th at 6:00pm';
+const LPT_EVENT_DATE_LINE = 'Sunday July 19th at 3:00pm';
 const LPT_MAX_PLAYERS = 20;
-const LPT_REGISTRATION_DEADLINE_LINE = 'Friday, May 29th, 2026 11:59pm';
+const LPT_REGISTRATION_DEADLINE_LINE = 'Saturday, July 18th, 2026 11:59pm';
 /** Shown in the “registration is LIVE” subject line (matches registration close). */
-const LPT_LIVE_EMAIL_SUBJECT_TAG = '[Register by May 29]';
+const LPT_LIVE_EMAIL_SUBJECT_TAG = '[Register by July 18]';
 
 const scriptProp = PropertiesService.getScriptProperties();
 
@@ -81,7 +81,7 @@ function setupRegistrationSheetHeadersOnce() {
 
 /**
  * Copies row 1 from LPT6 onto row 1 of the registration tab (creates tab if missing).
- * Use this if LPT8 should match your normalized LPT6 columns exactly.
+ * Use this if LPT9 should match your normalized LPT6 columns exactly.
  */
 function copyRegistrationHeadersFromLPT6() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -112,7 +112,7 @@ function onOpen() {
     .addItem('Copy row-1 headers from LPT6 → ' + sheetName, 'copyRegistrationHeadersFromLPT6')
     .addSeparator()
     .addItem('Send registration live email', 'sendRegistrationLiveEmails')
-    .addItem('Send <6 hours left reminder (LPT6 not in LPT8)', 'sendLastChanceSignupReminder')
+    .addItem('Send <6 hours left reminder (LPT6 not in LPT9)', 'sendLastChanceSignupReminder')
     .addToUi();
 }
 
@@ -388,7 +388,7 @@ function sendRegistrationLiveEmails() {
 }
 
 /**
- * Sends reminder emails to people who exist in LPT6 but are not yet in LPT8.
+ * Sends reminder emails to people who exist in LPT6 but are not yet in LPT9.
  * Intended for a final "less than 6 hours left" push.
  */
 function sendLastChanceSignupReminder() {
