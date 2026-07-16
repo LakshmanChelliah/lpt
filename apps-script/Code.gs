@@ -248,7 +248,7 @@ function sendPaymentReminders() {
     ) {
       MailApp.sendEmail({
         to: row[idx.Email],
-        subject: 'Payment Required – ' + LPT_EDITION + ' Registration',
+        subject: 'Payment Required - ' + LPT_EDITION + ' Registration',
         htmlBody:
           '<p>Hi ' +
           row[idx.Name] +
@@ -368,7 +368,7 @@ function sendRegistrationLiveEmails() {
       '',
       'If you no longer wish to receive these updates, just reply to this email and let me know.',
       '',
-      '– Laksh'
+      '- Laksh'
     ].join('\n');
 
     GmailApp.sendEmail(info.to, subject, body, {

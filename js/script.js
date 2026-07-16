@@ -45,23 +45,40 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-    // -------- TAB SWITCHING --------
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const target = btn.dataset.tab;
+  // -------- EVENT DETAILS (invitee info) --------
+  const details = EVENT.eventDetails || {};
+  const setText = (id, value) => {
+    const el = document.getElementById(id);
+    if (el && value != null && value !== '') el.textContent = value;
+  };
 
-        document.querySelectorAll('.tab-btn').forEach(b =>
-        b.classList.remove('active')
-        );
-        btn.classList.add('active');
+  setText('detail-invite-title', details.inviteTitle);
+  setText('detail-invite-rule', details.inviteRule);
+  setText('detail-entry', details.entry);
+  setText('detail-rebuy', details.rebuy);
+  setText('detail-buyin-summary', details.buyinSummary);
+  setText('detail-format', details.format);
+  setText('detail-bounty', details.bounty);
+  setText('detail-social-proof', details.socialProof);
+  setText('detail-note', details.note);
 
-        document.querySelectorAll('main section').forEach(section => {
-        section.style.display = 'none';
-        });
+  if (Array.isArray(details.payouts)) {
+    const payoutsEl = document.getElementById('detail-payouts');
+    if (payoutsEl) {
+      payoutsEl.innerHTML = '';
+      details.payouts.forEach(p => {
+        const li = document.createElement('li');
+        li.innerHTML =
+          `<span class="payout-place">${p.place}</span> ` +
+          `<span class="payout-pct">${p.pct}</span>`;
+        payoutsEl.appendChild(li);
+      });
+    }
+  }
 
-        document.getElementById(target).style.display = 'block';
-    });
-    });
+  document.querySelectorAll('[data-copy]').forEach(btn => {
+    btn.addEventListener('click', () => copyText(btn.dataset.copy));
+  });
 
   // ---------------- SPOTS REMAINING ----------------
   async function updateSpotsRemaining() {
@@ -84,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
         spotsEl.innerText = remaining;
       }
     } catch (err) {
-      document.getElementById('spots-count').innerText = '—';
+      document.getElementById('spots-count').innerText = '-';
     }
   }
 
@@ -114,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
     countdownEl.innerText = `${days}d ${hours}h ${minutes}m ${seconds}s`;
 
     if (diff < 1000 * 60 * 60 * 3) {
-      document.getElementById('registration-timer').style.color = 'darkred';
+      document.getElementById('registration-timer').classList.add('is-urgent');
     }
   }
 
@@ -127,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const spotsText = document.getElementById('spots-count').innerText.trim();
     const spotsLeft = parseInt(spotsText, 10);
-    // Only block when we actually got a number from the server (not "Loading…", "—", etc.)
+    // Only block when we actually got a number from the server (not "Loading…", "-", etc.)
     if (spotsText === 'SOLD OUT' || (!isNaN(spotsLeft) && spotsLeft <= 0)) {
       alert('Registration is sold out.');
       return;
@@ -157,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const referencePrefix = EVENT.referencePrefix || 'LPT 9';
-    const reference = `${referencePrefix} – ${name}`;
+    const reference = `${referencePrefix} - ${name}`;
 
     const payload = new URLSearchParams({
       Name: name,
@@ -181,7 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
       submitBtn.disabled = false;
       submitBtn.innerText = 'Register & Checkout';
       alert(
-        'Could not reach the registration server (network/CORS). Open DevTools → Network, retry, and confirm your Web App URL in config.js.'
+        'Could not reach the registration server (network/CORS). Open DevTools → Network, retry, and confirm your Web App URL in js/config.js.'
       );
       return;
     }
@@ -207,13 +224,22 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    document.getElementById('registration').style.display = 'none';
+    const detailsPanel = document.getElementById('event-details');
+    if (detailsPanel) {
+      detailsPanel.hidden = true;
+      detailsPanel.style.display = '';
+    }
+
+    document.getElementById('registration').hidden = true;
+    document.getElementById('registration').style.display = '';
     document.getElementById('pay-amount').innerText = `$${amount}`;
     document.getElementById('pay-ref').innerText = reference;
 
     const payment = document.getElementById('payment-screen');
-    payment.style.display = 'block';
-    payment.style.visibility = 'visible';
+    payment.hidden = false;
+    payment.style.display = '';
+    payment.style.visibility = '';
+    payment.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 });
 
@@ -222,4 +248,3 @@ function copyText(id) {
   navigator.clipboard.writeText(text);
   alert('Copied');
 }
-

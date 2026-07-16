@@ -4,7 +4,25 @@ A lightweight, serverless web application for managing poker tournament registra
 
 ---
 
-## 🎯 Features
+## Project layout
+
+```
+├── index.html              # Site entry (GitHub Pages)
+├── css/style.css
+├── js/
+│   ├── config.js           # Per-event settings
+│   └── script.js           # Registration UI logic
+├── assets/
+│   ├── images/             # Flyer / content images
+│   └── icons/              # Favicons & PWA icons
+├── apps-script/Code.gs     # Google Apps Script backend (paste into sheet)
+├── site.webmanifest
+└── README.md
+```
+
+---
+
+## Features
 
 - Online registration form (Name, Email, Phone)
 - Two buy-in options:
@@ -19,7 +37,7 @@ A lightweight, serverless web application for managing poker tournament registra
 
 ---
 
-## 🧱 Tech Stack
+## Tech Stack
 
 - **Frontend:** HTML, CSS, Vanilla JavaScript
 - **Backend:** Google Apps Script (Web App)
@@ -28,7 +46,4 @@ A lightweight, serverless web application for managing poker tournament registra
 - **Hosting:** GitHub Pages (free)
 
 ---
-
-
-
 
