@@ -1,7 +1,7 @@
 window.EVENT_CONFIG = {
   name: 'LPT 9',
   editionLabel: '9th Ever Laksh Poker Tournament',
-  dateDisplay: 'Sunday July 19th 3:00pm',
+  dateDisplay: 'Sunday July 19th 7:00pm',
 
   // Registration settings
   registrationDeadline: '2026-07-18T23:59:00', // Local time: July 18, 2026 11:59 PM

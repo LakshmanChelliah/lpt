@@ -9,7 +9,8 @@ const PRIOR_SHEETS_FOR_MAILING = ['LPT6'];
 
 const LPT_EDITION = 'LPT 9';
 const SITE_URL = 'https://lakshmanchelliah.github.io/lpt/';
-const LPT_EVENT_DATE_LINE = 'Sunday July 19th at 3:00pm';
+const LPT_EVENT_DATE_LINE = 'Sunday July 19th at 7:00pm';
+const LPT_EVENT_DATE_LINE_PREVIOUS = 'Sunday July 19th at 3:00pm';
 const LPT_MAX_PLAYERS = 20;
 const LPT_REGISTRATION_DEADLINE_LINE = 'Saturday, July 18th, 2026 11:59pm';
 /** Shown in the “registration is LIVE” subject line (matches registration close). */
@@ -113,6 +114,7 @@ function onOpen() {
     .addSeparator()
     .addItem('Send registration live email', 'sendRegistrationLiveEmails')
     .addItem('Send <6 hours left reminder (LPT6 not in LPT9)', 'sendLastChanceSignupReminder')
+    .addItem('Send time change update (3pm → 7pm)', 'sendEventTimeChangeUpdate')
     .addToUi();
 }
 
@@ -451,4 +453,110 @@ function sendLastChanceSignupReminder() {
       sheetName +
       ').'
   );
+}
+
+/**
+ * Plain-text body for the 3pm → 7pm time-change blast (shared by preview + send).
+ */
+function buildEventTimeChangeUpdateBody_(displayName) {
+  return [
+    'Hi ' + displayName + ',',
+    '',
+    'TIME CHANGE for ' + LPT_EDITION + ':',
+    'The tournament is now at 7:00pm (was 3:00pm).',
+    '',
+    'Updated event details:',
+    '• Date & time: ' + LPT_EVENT_DATE_LINE + ' (was ' + LPT_EVENT_DATE_LINE_PREVIOUS + ')',
+    '• Invites & Plus-Ones Only - plus-ones can’t bring plus-ones unless they’ve attended LPT before',
+    '• $60 entry (food & drinks included)',
+    '• Optional $20 rebuy if out before final table (total $60 or $80)',
+    '• Elimination style · $20 knock-out bounty per elimination',
+    '• Payouts: 1st 65% · 2nd 20% · 3rd 15%',
+    '• MAX ' + LPT_MAX_PLAYERS + ' players',
+    '• Every new LPT player you invite that signs up: $10 reimbursed to you (via e-transfer)',
+    '',
+    'Register / see the updated flyer here: ' + SITE_URL,
+    '',
+    'LAST DAY TO REGISTER: ' + LPT_REGISTRATION_DEADLINE_LINE,
+    '',
+    'If you already registered, your spot still counts - just come at 7:00pm instead of 3:00pm.',
+    '',
+    'If you no longer wish to receive these updates, just reply to this email and let me know.',
+    '',
+    '- Laksh'
+  ].join('\n');
+}
+
+/**
+ * Email registered players (LPT9) + prior list (LPT6) about the 3pm → 7pm change.
+ * Shows the message in a dialog before sending so you can review it.
+ */
+function sendEventTimeChangeUpdate() {
+  const ss = SpreadsheetApp.openById(scriptProp.getProperty('key'));
+  const recipients = collectRecipientsFromPriorSheets_(ss);
+
+  const current = collectRecipientsFromSheet_(ss, sheetName);
+  current.forEach(function (info, dedupKey) {
+    if (!recipients.has(dedupKey)) {
+      recipients.set(dedupKey, { to: info.to, name: info.name });
+    } else {
+      const cur = recipients.get(dedupKey);
+      if (!cur.name && info.name) cur.name = info.name;
+    }
+  });
+
+  if (recipients.size === 0) {
+    SpreadsheetApp.getUi().alert(
+      'No recipients found on ' +
+        PRIOR_SHEETS_FOR_MAILING.join(', ') +
+        ' or ' +
+        sheetName +
+        '.'
+    );
+    return;
+  }
+
+  const subject = LPT_EDITION + ' TIME CHANGE - now 7:00pm (was 3:00pm)';
+  const sampleBody = buildEventTimeChangeUpdateBody_('there');
+
+  const ui = SpreadsheetApp.getUi();
+  const preview =
+    'About to email ' +
+    recipients.size +
+    ' unique recipients (' +
+    PRIOR_SHEETS_FOR_MAILING.join(' + ') +
+    ' + ' +
+    sheetName +
+    ').\n\n' +
+    'Subject:\n' +
+    subject +
+    '\n\n' +
+    'Message:\n' +
+    sampleBody +
+    '\n\nSend this update now?';
+
+  const choice = ui.alert('Preview time-change email', preview, ui.ButtonSet.YES_NO);
+  if (choice !== ui.Button.YES) {
+    ui.alert('Cancelled - no emails sent.');
+    return;
+  }
+
+  let sentCount = 0;
+  recipients.forEach(function (info) {
+    const displayName = info.name || 'there';
+    const body = buildEventTimeChangeUpdateBody_(displayName);
+    GmailApp.sendEmail(info.to, subject, body, { name: 'LPT' });
+    sentCount++;
+  });
+
+  Logger.log(
+    'Sent time-change update emails to ' +
+      sentCount +
+      ' unique recipients (deduped across ' +
+      PRIOR_SHEETS_FOR_MAILING.join(' + ') +
+      ' + ' +
+      sheetName +
+      ').'
+  );
+  ui.alert('Sent time-change update to ' + sentCount + ' unique recipients.');
 }
