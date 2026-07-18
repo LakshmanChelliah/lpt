@@ -467,7 +467,7 @@ function buildEventTimeChangeUpdateBody_(displayName) {
     '',
     'Updated event details:',
     '• Date & time: ' + LPT_EVENT_DATE_LINE + ' (was ' + LPT_EVENT_DATE_LINE_PREVIOUS + ')',
-    '• Invites & Plus-Ones Only — plus-ones can’t bring plus-ones unless they’ve attended LPT before',
+    '• Invites & Plus-Ones Only - plus-ones can’t bring plus-ones unless they’ve attended LPT before',
     '• $60 entry (food & drinks included)',
     '• Optional $20 rebuy if out before final table (total $60 or $80)',
     '• Elimination style · $20 knock-out bounty per elimination',
@@ -479,7 +479,7 @@ function buildEventTimeChangeUpdateBody_(displayName) {
     '',
     'LAST DAY TO REGISTER: ' + LPT_REGISTRATION_DEADLINE_LINE,
     '',
-    'If you already registered, your spot still counts — just come at 7:00pm instead of 3:00pm.',
+    'If you already registered, your spot still counts - just come at 7:00pm instead of 3:00pm.',
     '',
     'If you no longer wish to receive these updates, just reply to this email and let me know.',
     '',
@@ -516,7 +516,7 @@ function sendEventTimeChangeUpdate() {
     return;
   }
 
-  const subject = LPT_EDITION + ' TIME CHANGE — now 7:00pm (was 3:00pm)';
+  const subject = LPT_EDITION + ' TIME CHANGE - now 7:00pm (was 3:00pm)';
   const sampleBody = buildEventTimeChangeUpdateBody_('there');
 
   const ui = SpreadsheetApp.getUi();
@@ -537,7 +537,7 @@ function sendEventTimeChangeUpdate() {
 
   const choice = ui.alert('Preview time-change email', preview, ui.ButtonSet.YES_NO);
   if (choice !== ui.Button.YES) {
-    ui.alert('Cancelled — no emails sent.');
+    ui.alert('Cancelled - no emails sent.');
     return;
   }
 
