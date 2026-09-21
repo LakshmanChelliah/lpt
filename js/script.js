@@ -2,14 +2,15 @@ const EVENT = window.EVENT_CONFIG || {};
 const SCRIPT_URL =
   EVENT.scriptUrl ||
   'https://script.google.com/macros/s/AKfycbzOMjf8VX2qoPcAaRX_dNjA1qrz47baiNDzeLAJlelRpxCdX2tpS6nsvlVLgSnPdgAk1A/exec';
-const REGISTRATION_DEADLINE = new Date(EVENT.registrationDeadline || '2026-07-18T23:59:00');
+const REGISTRATION_DEADLINE = new Date(EVENT.registrationDeadline || '2026-09-25T23:59:00');
 const MAX_SPOTS = EVENT.maxSpots || 20;
 
 document.addEventListener('DOMContentLoaded', () => {
   const countdownEl = document.getElementById('countdown');
   const form = document.getElementById('registration-form');
   const submitBtn = form.querySelector('button[type="submit"]');
-  const feeSelect = document.getElementById('fee');
+  const feeInput = document.getElementById('fee');
+  const feeNotice = document.getElementById('fee-notice');
 
   // -------- APPLY CONFIG TO UI --------
   if (EVENT.name) {
@@ -35,14 +36,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (payEmailEl) payEmailEl.innerText = EVENT.paymentEmail;
   }
 
-  if (Array.isArray(EVENT.fees) && feeSelect) {
-    feeSelect.innerHTML = '';
-    EVENT.fees.forEach(fee => {
-      const opt = document.createElement('option');
-      opt.value = String(fee.value);
-      opt.textContent = fee.label;
-      feeSelect.appendChild(opt);
-    });
+  if (Array.isArray(EVENT.fees) && EVENT.fees.length && feeInput) {
+    const fee = EVENT.fees[0];
+    feeInput.value = String(fee.value);
+    if (feeNotice) feeNotice.textContent = fee.notice || fee.label;
   }
 
   // -------- EVENT DETAILS (invitee info) --------
@@ -56,7 +53,15 @@ document.addEventListener('DOMContentLoaded', () => {
   setText('detail-invite-rule', details.inviteRule);
   setText('detail-entry', details.entry);
   setText('detail-rebuy', details.rebuy);
-  setText('detail-buyin-summary', details.buyinSummary);
+  const buyinSummaryEl = document.getElementById('detail-buyin-summary');
+  if (buyinSummaryEl) {
+    if (details.buyinSummary) {
+      buyinSummaryEl.textContent = details.buyinSummary;
+      buyinSummaryEl.hidden = false;
+    } else {
+      buyinSummaryEl.hidden = true;
+    }
+  }
   setText('detail-format', details.format);
   setText('detail-bounty', details.bounty);
   setText('detail-social-proof', details.socialProof);
@@ -169,11 +174,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (feeConfig && typeof feeConfig.amount === 'number') {
         amount = feeConfig.amount;
       }
-    } else if (fee === '80') {
-      amount = 80;
     }
 
-    const referencePrefix = EVENT.referencePrefix || 'LPT 9';
+    const referencePrefix = EVENT.referencePrefix || 'LPT 10';
     const reference = `${referencePrefix} - ${name}`;
 
     const payload = new URLSearchParams({
@@ -219,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
           : 'Registration failed (HTTP ' + postRes.status + ').';
       alert(
         errMsg +
-          '\n\nTypical fixes: Deploy the Apps Script as a Web app (Execute as: you, Who has access: Anyone), then Manage deployments → edit → New version. Ensure the sheet tab name matches Code.gs (e.g. LPT9) and initialSetup() was run on that spreadsheet.'
+          '\n\nTypical fixes: Deploy the Apps Script as a Web app (Execute as: you, Who has access: Anyone), then Manage deployments → edit → New version. Ensure the sheet tab name matches Code.gs (e.g. LPT10) and initialSetup() was run on that spreadsheet.'
       );
       return;
     }

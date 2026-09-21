@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LPT 9 - Registration</title>
+  <title>LPT 10 - Registration</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=invitee2" />
+  <link rel="stylesheet" href="css/style.css?v=20260926-7pm" />
 
   <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png" />
@@ -21,15 +21,15 @@
   <header class="hero">
     <div class="hero-content">
       <p class="hero-eyebrow" aria-hidden="true">♠ Private tournament</p>
-      <h1 id="event-name" class="hero-brand">LPT 9</h1>
-      <p id="event-description" class="hero-tagline">9th Ever Laksh Poker Tournament</p>
+      <h1 id="event-name" class="hero-brand">LPT 10</h1>
+      <p id="event-description" class="hero-tagline">10th Ever Laksh Poker Tournament</p>
     </div>
   </header>
 
   <div class="status-strip" role="status">
     <p id="event-date" class="status-item">
       <span class="status-label">Date</span>
-      <strong>Sunday July 19th 7:00pm</strong>
+      <strong>Saturday September 26th 7:00pm</strong>
     </p>
     <p id="spots-remaining" class="status-item">
       <span class="status-label">Spots left</span>
@@ -46,8 +46,7 @@
       <div class="panel-header">
         <h2 id="registration-heading">Register</h2>
         <p class="panel-intro">
-          Name, email, and fee are required; phone and referral are optional.
-          Choosing re-buy sets your fee to $80.
+          Name and email are required; phone and referral are optional.
         </p>
       </div>
 
@@ -67,12 +66,9 @@
           <input type="tel" id="phone" name="Phone" />
         </div>
 
-        <div class="form-group">
-          <label for="fee">Select your fee:</label>
-          <select id="fee" name="Fee" required>
-            <option value="60">$60 Registration</option>
-            <option value="80">$80 Registration + re-buy</option>
-          </select>
+        <div class="form-group" id="fee-group">
+          <p id="fee-notice" class="fee-notice">$60 registration. No rebuy this event.</p>
+          <input type="hidden" id="fee" name="Fee" value="60" />
         </div>
 
         <div class="form-group">
@@ -114,8 +110,8 @@
           <dt>Buy-in</dt>
           <dd>
             <span id="detail-entry">$60 entry (food &amp; drinks included)</span>
-            <span id="detail-rebuy" class="details-sub">Optional $20 rebuy if out before final table</span>
-            <span id="detail-buyin-summary" class="details-sub details-sub--strong">Total: $60 or $80</span>
+            <span id="detail-rebuy" class="details-sub details-sub--strong">No rebuy this event.</span>
+            <span id="detail-buyin-summary" class="details-sub details-sub--strong" hidden></span>
           </dd>
         </div>
 
@@ -151,7 +147,7 @@
       <details class="flyer-fold">
         <summary>View event flyer</summary>
         <figure class="about-image">
-          <img src="assets/images/about-image.png?v=20260719-7pm" alt="LPT 9 event flyer with date, buy-in, and prize details" />
+          <img src="assets/images/about-image.png?v=20260926-7pm" alt="LPT 10 event flyer for Saturday September 26th at 7:00pm, $60 entry, no rebuy" />
         </figure>
       </details>
     </section>
@@ -198,7 +194,7 @@
     </p>
   </footer>
 
-  <script src="js/config.js?v=20260719-7pm"></script>
-  <script src="js/script.js?v=20260719e"></script>
+  <script src="js/config.js?v=20260926-7pm"></script>
+  <script src="js/script.js?v=20260926-7pm"></script>
 </body>
 </html>
