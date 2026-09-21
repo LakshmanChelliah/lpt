@@ -15,6 +15,9 @@ const LPT_REGISTRATION_DEADLINE_LINE = 'Friday, September 25th, 2026 11:59pm';
 /** Shown in the “registration is LIVE” subject line (matches registration close). */
 const LPT_LIVE_EMAIL_SUBJECT_TAG = '[Register by September 25]';
 const LPT_NO_REBUY_LINE = 'No rebuy this event. Entry is $60 (food & drinks included).';
+/** $10 off for the person who refers a first-time LPT player. */
+const LPT_REFERRAL_LINE =
+  'Refer a player who is new to LPT. If they sign up, you get $10 off your buy-in.';
 
 const scriptProp = PropertiesService.getScriptProperties();
 
@@ -361,7 +364,7 @@ function sendRegistrationLiveEmails() {
       'Event details:',
       '• ' + LPT_EVENT_DATE_LINE,
       '• ' + LPT_NO_REBUY_LINE,
-      '• Every new LPT Player you invite that sign-up, $10 will be reinbursed to you (via etransfer)',
+      '• ' + LPT_REFERRAL_LINE,
       '• MAX ' + LPT_MAX_PLAYERS + ' Players for ' + LPT_EDITION,
       '',
       'You can register here: ' + siteUrl,
@@ -433,6 +436,7 @@ function sendLastChanceSignupReminder() {
       '',
       'Quick reminder: there are less than 6 hours left to register for ' + LPT_EDITION + '.',
       LPT_NO_REBUY_LINE,
+      LPT_REFERRAL_LINE,
       '',
       'Sign up here: ' + siteUrl,
       '',
