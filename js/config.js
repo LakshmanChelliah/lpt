@@ -1,29 +1,33 @@
 window.EVENT_CONFIG = {
-  name: 'LPT 9',
-  editionLabel: '9th Ever Laksh Poker Tournament',
-  dateDisplay: 'Sunday July 19th 7:00pm',
+  name: 'LPT 10',
+  editionLabel: '10th Ever Laksh Poker Tournament',
+  dateDisplay: 'Saturday September 26th 7:00pm',
 
   // Registration settings
-  registrationDeadline: '2026-07-18T23:59:00', // Local time: July 18, 2026 11:59 PM
+  registrationDeadline: '2026-09-25T23:59:00', // Local time: September 25, 2026 11:59 PM
   maxSpots: 20,
 
-  // Fee options shown in the select dropdown
+  // Single buy-in. There is no rebuy for this event.
   fees: [
-    { value: '60', label: '$60 Registration', amount: 60 },
-    { value: '80', label: '$80 Registration + re-buy', amount: 80 }
+    {
+      value: '60',
+      label: '$60 Registration',
+      amount: 60,
+      notice: '$60 registration. No rebuy this event.'
+    }
   ],
 
   // Payment details
   paymentEmail: 'lakshman.chelliah@gmail.com',
-  referencePrefix: 'LPT 9',
+  referencePrefix: 'LPT 10',
 
   // Invitee-facing event info (rendered into #event-details)
   eventDetails: {
     inviteTitle: 'Invites & Plus-Ones Only',
     inviteRule: "Plus-ones can’t bring plus-ones unless they’ve attended LPT before.",
     entry: '$60 entry (food & drinks included)',
-    rebuy: 'Optional $20 rebuy if out before final table',
-    buyinSummary: 'Total: $60 or $80',
+    rebuy: 'No rebuy this event.',
+    buyinSummary: '',
     format: 'Elimination style',
     bounty: '$20 knock-out for every player you eliminate',
     payouts: [

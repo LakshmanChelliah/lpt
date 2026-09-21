@@ -1,4 +1,4 @@
-/* ===== Private Felt Club - LPT 9 ===== */
+/* ===== Private Felt Club - LPT 10 ===== */
 :root {
   --felt-deep: #061a14;
   --felt: #0b3d2e;
@@ -368,6 +368,16 @@ main {
   margin-top: 6px;
   color: var(--ink-muted);
   font-size: 0.85rem;
+}
+
+.fee-notice {
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  border-radius: var(--radius);
+  background: rgba(212, 175, 55, 0.1);
+  color: var(--gold-bright);
+  font-weight: 600;
 }
 
 .loading-text {

@@ -25,9 +25,7 @@ A lightweight, serverless web application for managing poker tournament registra
 ## Features
 
 - Online registration form (Name, Email, Phone)
-- Two buy-in options:
-  - $60 Registration
-  - $80 Registration + Rebuy
+- $60 registration (no rebuy this event)
 - Optional referral field for discounts (manually reviewed)
 - Immediate payment instruction screen after registration
 - Countdown timer until registration closes
