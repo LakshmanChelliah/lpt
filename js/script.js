@@ -2,7 +2,7 @@ const EVENT = window.EVENT_CONFIG || {};
 const SCRIPT_URL =
   EVENT.scriptUrl ||
   'https://script.google.com/macros/s/AKfycbzOMjf8VX2qoPcAaRX_dNjA1qrz47baiNDzeLAJlelRpxCdX2tpS6nsvlVLgSnPdgAk1A/exec';
-const REGISTRATION_DEADLINE = new Date(EVENT.registrationDeadline || '2026-09-25T23:59:00');
+const REGISTRATION_DEADLINE = new Date(EVENT.registrationDeadline || '2026-11-27T23:59:00');
 const MAX_SPOTS = EVENT.maxSpots || 20;
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    const referencePrefix = EVENT.referencePrefix || 'LPT 10';
+    const referencePrefix = EVENT.referencePrefix || 'LPT 11';
     const reference = `${referencePrefix} - ${name}`;
 
     const payload = new URLSearchParams({
@@ -222,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
           : 'Registration failed (HTTP ' + postRes.status + ').';
       alert(
         errMsg +
-          '\n\nTypical fixes: Deploy the Apps Script as a Web app (Execute as: you, Who has access: Anyone), then Manage deployments → edit → New version. Ensure the sheet tab name matches Code.gs (e.g. LPT10) and initialSetup() was run on that spreadsheet.'
+          '\n\nTypical fixes: Deploy the Apps Script as a Web app (Execute as: you, Who has access: Anyone), then Manage deployments → edit → New version. Ensure the sheet tab name matches Code.gs (e.g. LPT11) and initialSetup() was run on that spreadsheet.'
       );
       return;
     }

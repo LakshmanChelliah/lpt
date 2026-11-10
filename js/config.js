@@ -1,10 +1,10 @@
 window.EVENT_CONFIG = {
-  name: 'LPT 10',
-  editionLabel: '10th Ever Laksh Poker Tournament',
-  dateDisplay: 'Saturday September 26th 7:00pm',
+  name: 'LPT 11',
+  editionLabel: '11th Ever Laksh Poker Tournament',
+  dateDisplay: 'Saturday November 28th 6:00pm',
 
   // Registration settings
-  registrationDeadline: '2026-09-25T23:59:00', // Local time: September 25, 2026 11:59 PM
+  registrationDeadline: '2026-11-27T23:59:00', // Local time: November 27, 2026 11:59 PM
   maxSpots: 20,
 
   // Single buy-in. There is no rebuy for this event.
@@ -19,7 +19,7 @@ window.EVENT_CONFIG = {
 
   // Payment details
   paymentEmail: 'lakshman.chelliah@gmail.com',
-  referencePrefix: 'LPT 10',
+  referencePrefix: 'LPT 11',
 
   // Invitee-facing event info (rendered into #event-details)
   eventDetails: {

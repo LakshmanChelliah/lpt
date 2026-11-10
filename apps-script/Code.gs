@@ -3,17 +3,17 @@
  * website and append them to a Google Sheet.
  */
 
-const sheetName = 'LPT10';
-/** Past-player tabs for mail merge. LPT6 is the normalized history; LPT9 is the last event. */
-const PRIOR_SHEETS_FOR_MAILING = ['LPT6', 'LPT9'];
+const sheetName = 'LPT11';
+/** Past-player tabs for mail merge. LPT6 is the normalized history. */
+const PRIOR_SHEETS_FOR_MAILING = ['LPT6', 'LPT9', 'LPT10'];
 
-const LPT_EDITION = 'LPT 10';
+const LPT_EDITION = 'LPT 11';
 const SITE_URL = 'https://lakshmanchelliah.github.io/lpt/';
-const LPT_EVENT_DATE_LINE = 'Saturday September 26th at 7:00pm';
+const LPT_EVENT_DATE_LINE = 'Saturday November 28th at 6:00pm';
 const LPT_MAX_PLAYERS = 20;
-const LPT_REGISTRATION_DEADLINE_LINE = 'Friday, September 25th, 2026 11:59pm';
+const LPT_REGISTRATION_DEADLINE_LINE = 'Friday, November 27th, 2026 11:59pm';
 /** Shown in the “registration is LIVE” subject line (matches registration close). */
-const LPT_LIVE_EMAIL_SUBJECT_TAG = '[Register by September 25]';
+const LPT_LIVE_EMAIL_SUBJECT_TAG = '[Register by November 27]';
 const LPT_NO_REBUY_LINE = 'No rebuy this event. Entry is $60 (food & drinks included).';
 /** $10 off for the person who refers a first-time LPT player. */
 const LPT_REFERRAL_LINE =
@@ -85,7 +85,7 @@ function setupRegistrationSheetHeadersOnce() {
 
 /**
  * Copies row 1 from LPT6 onto row 1 of the registration tab (creates tab if missing).
- * Use this if LPT10 should match your normalized LPT6 columns exactly.
+ * Use this if LPT11 should match your normalized LPT6 columns exactly.
  */
 function copyRegistrationHeadersFromLPT6() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -336,7 +336,7 @@ function collectRecipientsFromPriorSheets_(ss) {
 }
 
 /**
- * Send a one-time email to previous players (LPT6 + LPT9)
+ * Send a one-time email to previous players on the configured prior tabs
  * announcing that registration is (or will be) live.
  */
 function sendRegistrationLiveEmails() {
