@@ -14,7 +14,7 @@ const LPT_MAX_PLAYERS = 20;
 const LPT_REGISTRATION_DEADLINE_LINE = 'Friday, November 27th, 2026 11:59pm';
 /** Shown in the “registration is LIVE” subject line (matches registration close). */
 const LPT_LIVE_EMAIL_SUBJECT_TAG = '[Register by November 27]';
-const LPT_NO_REBUY_LINE = 'Entry is $60 (food & drinks included). Rebuy purchases will open during the week of the event.';
+const LPT_NO_REBUY_LINE = 'Entry is $60 (food & drinks included), with an optional $20 rebuy.';
 /** $10 off for the person who refers a first-time LPT player. */
 const LPT_REFERRAL_LINE =
   'Refer a player who is new to LPT. If they sign up, you get $10 off your buy-in.';

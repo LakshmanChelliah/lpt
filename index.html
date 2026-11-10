@@ -67,8 +67,11 @@
         </div>
 
         <div class="form-group" id="fee-group">
-          <p id="fee-notice" class="fee-notice">$60 registration. Rebuy purchases will open during the week of the event.</p>
-          <input type="hidden" id="fee" name="Fee" value="60" />
+          <label for="fee">Select your fee:</label>
+          <select id="fee" name="Fee" required>
+            <option value="60">$60 Registration</option>
+            <option value="80">$80 Registration + $20 rebuy</option>
+          </select>
         </div>
 
         <div class="form-group">
@@ -110,8 +113,8 @@
           <dt>Buy-in</dt>
           <dd>
             <span id="detail-entry">$60 entry (food &amp; drinks included)</span>
-            <span id="detail-rebuy" class="details-sub details-sub--strong">Rebuy purchases will open during the week of the event.</span>
-            <span id="detail-buyin-summary" class="details-sub details-sub--strong" hidden></span>
+            <span id="detail-rebuy" class="details-sub details-sub--strong">Optional $20 rebuy</span>
+            <span id="detail-buyin-summary" class="details-sub details-sub--strong">Total: $60 or $80</span>
           </dd>
         </div>
 
@@ -188,7 +191,7 @@
     </p>
   </footer>
 
-  <script src="js/config.js?v=20261128-rebuy"></script>
-  <script src="js/script.js?v=20261128-6pm"></script>
+  <script src="js/config.js?v=20261128-rebuy2"></script>
+  <script src="js/script.js?v=20261128-rebuy2"></script>
 </body>
 </html>

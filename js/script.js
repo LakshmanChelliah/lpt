@@ -9,8 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const countdownEl = document.getElementById('countdown');
   const form = document.getElementById('registration-form');
   const submitBtn = form.querySelector('button[type="submit"]');
-  const feeInput = document.getElementById('fee');
-  const feeNotice = document.getElementById('fee-notice');
+  const feeSelect = document.getElementById('fee');
 
   // -------- APPLY CONFIG TO UI --------
   if (EVENT.name) {
@@ -36,10 +35,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (payEmailEl) payEmailEl.innerText = EVENT.paymentEmail;
   }
 
-  if (Array.isArray(EVENT.fees) && EVENT.fees.length && feeInput) {
-    const fee = EVENT.fees[0];
-    feeInput.value = String(fee.value);
-    if (feeNotice) feeNotice.textContent = fee.notice || fee.label;
+  if (Array.isArray(EVENT.fees) && feeSelect) {
+    feeSelect.innerHTML = '';
+    EVENT.fees.forEach(fee => {
+      const option = document.createElement('option');
+      option.value = String(fee.value);
+      option.textContent = fee.label;
+      feeSelect.appendChild(option);
+    });
   }
 
   // -------- EVENT DETAILS (invitee info) --------
