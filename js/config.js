@@ -7,13 +7,13 @@ window.EVENT_CONFIG = {
   registrationDeadline: '2026-11-27T23:59:00', // Local time: November 27, 2026 11:59 PM
   maxSpots: 20,
 
-  // Single buy-in. There is no rebuy for this event.
+  // Registration buy-in. Rebuy purchases open later.
   fees: [
     {
       value: '60',
       label: '$60 Registration',
       amount: 60,
-      notice: '$60 registration. No rebuy this event.'
+      notice: '$60 registration. Rebuy purchases will open during the week of the event.'
     }
   ],
 
@@ -26,7 +26,7 @@ window.EVENT_CONFIG = {
     inviteTitle: 'Invites & Plus-Ones Only',
     inviteRule: "Plus-ones can’t bring plus-ones unless they’ve attended LPT before.",
     entry: '$60 entry (food & drinks included)',
-    rebuy: 'No rebuy this event.',
+    rebuy: 'Rebuy purchases will open during the week of the event.',
     buyinSummary: '',
     format: 'Elimination style',
     bounty: '$20 knock-out for every player you eliminate',
