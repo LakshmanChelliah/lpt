@@ -22,7 +22,7 @@ window.EVENT_CONFIG = {
     inviteTitle: 'Invites & Plus-Ones Only',
     inviteRule: "Plus-ones can’t bring plus-ones unless they’ve attended LPT before.",
     entry: '$60 entry (food & drinks included)',
-    rebuy: 'Optional $20 rebuy',
+    rebuy: 'Rebuy available for $20',
     buyinSummary: 'Total: $60 or $80',
     format: 'Elimination style',
     bounty: '$20 knock-out for every player you eliminate',
