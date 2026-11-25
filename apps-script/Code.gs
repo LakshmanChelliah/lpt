@@ -9,7 +9,8 @@ const PRIOR_SHEETS_FOR_MAILING = ['LPT6', 'LPT9', 'LPT10'];
 
 const LPT_EDITION = 'LPT 11';
 const SITE_URL = 'https://lakshmanchelliah.github.io/lpt/';
-const LPT_EVENT_DATE_LINE = 'Saturday November 28th at 6:00pm';
+const LPT_EVENT_DATE_LINE = 'Saturday November 28th at 8:00pm';
+const LPT_PREVIOUS_START = '6:00pm';
 const LPT_MAX_PLAYERS = 20;
 const LPT_REGISTRATION_DEADLINE_LINE = 'Friday, November 27th, 2026 11:59pm';
 /** Shown in the “registration is LIVE” subject line (matches registration close). */
@@ -116,6 +117,7 @@ function onOpen() {
     .addItem('Copy row-1 headers from LPT6 → ' + sheetName, 'copyRegistrationHeadersFromLPT6')
     .addSeparator()
     .addItem('Send registration live email', 'sendRegistrationLiveEmails')
+    .addItem('Send 8pm time change (prior players + ' + sheetName + ')', 'sendUpcomingGameReminder')
     .addItem('Send <6 hours left reminder (prior players not in ' + sheetName + ')', 'sendLastChanceSignupReminder')
     .addToUi();
 }
@@ -390,6 +392,156 @@ function sendRegistrationLiveEmails() {
       PRIOR_SHEETS_FOR_MAILING.join(' + ') +
       ').'
   );
+}
+
+/**
+ * Prior players who are not already on the current registration tab.
+ * @returns {Map<string, {to: string, name: string}>}
+ */
+function collectUnregisteredPriorRecipients_(ss) {
+  const currentSheet = ss.getSheetByName(sheetName);
+  if (!currentSheet) {
+    throw new Error('Missing ' + sheetName + ' sheet. Please confirm the sheet name exists.');
+  }
+
+  const currentRows = currentSheet.getDataRange().getValues();
+  const currentHeaders = currentRows.length ? currentRows[0] : [];
+  const currentIdx = Object.fromEntries(currentHeaders.map((h, i) => [h, i]));
+
+  if (currentIdx.Email == null) {
+    throw new Error('Email column not found in ' + sheetName + '. Check header names.');
+  }
+
+  const registered = new Set();
+  for (let i = 1; i < currentRows.length; i++) {
+    const key = normalizeEmailForDedup_(currentRows[i][currentIdx.Email]);
+    if (key) registered.add(key);
+  }
+
+  const priorRecipients = collectRecipientsFromPriorSheets_(ss);
+  const recipients = new Map();
+  priorRecipients.forEach(function (info, dedupKey) {
+    if (!registered.has(dedupKey)) recipients.set(dedupKey, info);
+  });
+  return recipients;
+}
+
+/**
+ * Prior players plus everyone already registered for this event.
+ * Registered players are included so they hear about the time change.
+ * @returns {Map<string, {to: string, name: string}>}
+ */
+function collectPriorAndCurrentRecipients_(ss) {
+  if (!ss.getSheetByName(sheetName)) {
+    throw new Error('Missing ' + sheetName + ' sheet. Please confirm the sheet name exists.');
+  }
+
+  const recipients = collectRecipientsFromPriorSheets_(ss);
+  const current = collectRecipientsFromSheet_(ss, sheetName);
+  current.forEach(function (info, dedupKey) {
+    if (!recipients.has(dedupKey)) {
+      recipients.set(dedupKey, { to: info.to, name: info.name });
+    } else {
+      const cur = recipients.get(dedupKey);
+      if (!cur.name && info.name) cur.name = info.name;
+    }
+  });
+  return recipients;
+}
+
+/**
+ * Plain-text body for the Saturday reminder and 6:00pm to 8:00pm time change.
+ * Goes to past players and to people already on the current registration tab.
+ */
+function buildUpcomingGameReminderBody_(displayName) {
+  return [
+    'Hi ' + displayName + ',',
+    '',
+    'TIME CHANGE for ' + LPT_EDITION + ':',
+    'The tournament is now at 8:00pm (was ' + LPT_PREVIOUS_START + ').',
+    '',
+    'Quick reminder: ' + LPT_EDITION + ' is this Saturday.',
+    'One table is about to be filled, and the next table is already taking spots.',
+    'After the first table fills, new signups sit at the next table.',
+    '',
+    'Event details:',
+    '• ' + LPT_EVENT_DATE_LINE + ' (was ' + LPT_PREVIOUS_START + ')',
+    '• ' + LPT_NO_REBUY_LINE,
+    '• ' + LPT_REFERRAL_LINE,
+    '• MAX ' + LPT_MAX_PLAYERS + ' Players for ' + LPT_EDITION,
+    '',
+    'You can register here: ' + SITE_URL,
+    '',
+    'LAST DAY TO REGISTER: ' + LPT_REGISTRATION_DEADLINE_LINE,
+    '',
+    'If you already registered, your spot still counts. Come at 8:00pm instead of ' +
+      LPT_PREVIOUS_START +
+      '.',
+    '',
+    'If you no longer wish to receive these updates, just reply to this email and let me know.',
+    '',
+    '- Laksh'
+  ].join('\n');
+}
+
+/**
+ * Reminder plus time-change note for prior players and current LPT registrants.
+ * Shows the message before sending. The "<6 hours left" email stays separate.
+ */
+function sendUpcomingGameReminder() {
+  const ss = SpreadsheetApp.openById(scriptProp.getProperty('key'));
+  const recipients = collectPriorAndCurrentRecipients_(ss);
+  const ui = SpreadsheetApp.getUi();
+
+  if (recipients.size === 0) {
+    ui.alert(
+      'No recipients found on ' + PRIOR_SHEETS_FOR_MAILING.join(', ') + ' or ' + sheetName + '.'
+    );
+    return;
+  }
+
+  const subject = LPT_EDITION + ' TIME CHANGE - now 8:00pm (was ' + LPT_PREVIOUS_START + ')';
+  const sampleBody = buildUpcomingGameReminderBody_('there');
+  const preview =
+    'About to email ' +
+    recipients.size +
+    ' people on ' +
+    PRIOR_SHEETS_FOR_MAILING.join(' + ') +
+    ' + ' +
+    sheetName +
+    '.\n\n' +
+    'Subject:\n' +
+    subject +
+    '\n\n' +
+    'Message:\n' +
+    sampleBody +
+    '\n\nSend this time change now?';
+
+  const choice = ui.alert('Preview 8pm time change', preview, ui.ButtonSet.YES_NO);
+  if (choice !== ui.Button.YES) {
+    ui.alert('Cancelled. No emails sent.');
+    return;
+  }
+
+  let sentCount = 0;
+  recipients.forEach(function (info) {
+    const displayName = info.name || 'there';
+    GmailApp.sendEmail(info.to, subject, buildUpcomingGameReminderBody_(displayName), {
+      name: 'LPT'
+    });
+    sentCount++;
+  });
+
+  Logger.log(
+    'Sent 8pm time-change emails to ' +
+      sentCount +
+      ' recipients (deduped across ' +
+      PRIOR_SHEETS_FOR_MAILING.join(' + ') +
+      ' + ' +
+      sheetName +
+      ').'
+  );
+  ui.alert('Sent the 8pm time change to ' + sentCount + ' people.');
 }
 
 /**

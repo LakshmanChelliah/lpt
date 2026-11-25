@@ -1,7 +1,7 @@
 window.EVENT_CONFIG = {
   name: 'LPT 11',
   editionLabel: '11th Ever Laksh Poker Tournament',
-  dateDisplay: 'Saturday November 28th 6:00pm',
+  dateDisplay: 'Saturday November 28th 8:00pm',
 
   // Registration settings
   registrationDeadline: '2026-11-27T23:59:00', // Local time: November 27, 2026 11:59 PM
