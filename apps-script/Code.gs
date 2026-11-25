@@ -116,6 +116,7 @@ function onOpen() {
     .addItem('Copy row-1 headers from LPT6 → ' + sheetName, 'copyRegistrationHeadersFromLPT6')
     .addSeparator()
     .addItem('Send registration live email', 'sendRegistrationLiveEmails')
+    .addItem('Send Saturday reminder (prior players not in ' + sheetName + ')', 'sendUpcomingGameReminder')
     .addItem('Send <6 hours left reminder (prior players not in ' + sheetName + ')', 'sendLastChanceSignupReminder')
     .addToUi();
 }
@@ -390,6 +391,128 @@ function sendRegistrationLiveEmails() {
       PRIOR_SHEETS_FOR_MAILING.join(' + ') +
       ').'
   );
+}
+
+/**
+ * Prior players who are not already on the current registration tab.
+ * @returns {Map<string, {to: string, name: string}>}
+ */
+function collectUnregisteredPriorRecipients_(ss) {
+  const currentSheet = ss.getSheetByName(sheetName);
+  if (!currentSheet) {
+    throw new Error('Missing ' + sheetName + ' sheet. Please confirm the sheet name exists.');
+  }
+
+  const currentRows = currentSheet.getDataRange().getValues();
+  const currentHeaders = currentRows.length ? currentRows[0] : [];
+  const currentIdx = Object.fromEntries(currentHeaders.map((h, i) => [h, i]));
+
+  if (currentIdx.Email == null) {
+    throw new Error('Email column not found in ' + sheetName + '. Check header names.');
+  }
+
+  const registered = new Set();
+  for (let i = 1; i < currentRows.length; i++) {
+    const key = normalizeEmailForDedup_(currentRows[i][currentIdx.Email]);
+    if (key) registered.add(key);
+  }
+
+  const priorRecipients = collectRecipientsFromPriorSheets_(ss);
+  const recipients = new Map();
+  priorRecipients.forEach(function (info, dedupKey) {
+    if (!registered.has(dedupKey)) recipients.set(dedupKey, info);
+  });
+  return recipients;
+}
+
+/**
+ * Plain-text body for the "game is this Saturday" signup reminder.
+ */
+function buildUpcomingGameReminderBody_(displayName) {
+  return [
+    'Hi ' + displayName + ',',
+    '',
+    'Quick reminder: ' + LPT_EDITION + ' is this Saturday.',
+    'Event details:',
+    '• ' + LPT_EVENT_DATE_LINE,
+    '• ' + LPT_NO_REBUY_LINE,
+    '• ' + LPT_REFERRAL_LINE,
+    '• MAX ' + LPT_MAX_PLAYERS + ' Players for ' + LPT_EDITION,
+    '',
+    'You can register here: ' + SITE_URL,
+    '',
+    'LAST DAY TO REGISTER: ' + LPT_REGISTRATION_DEADLINE_LINE,
+    '',
+    'If you already registered, please ignore this message.',
+    '',
+    'If you no longer wish to receive these updates, just reply to this email and let me know.',
+    '',
+    '- Laksh'
+  ].join('\n');
+}
+
+/**
+ * Reminder for prior players who have not registered for the upcoming game.
+ * Shows the message before sending. The "<6 hours left" email stays separate.
+ */
+function sendUpcomingGameReminder() {
+  const ss = SpreadsheetApp.openById(scriptProp.getProperty('key'));
+  const recipients = collectUnregisteredPriorRecipients_(ss);
+  const ui = SpreadsheetApp.getUi();
+
+  if (recipients.size === 0) {
+    ui.alert(
+      'No unregistered prior players found on ' +
+        PRIOR_SHEETS_FOR_MAILING.join(', ') +
+        ' (everyone there is already on ' +
+        sheetName +
+        ', or those tabs are empty).'
+    );
+    return;
+  }
+
+  const subject = LPT_EDITION + ' Reminder - this Saturday at 6:00pm';
+  const sampleBody = buildUpcomingGameReminderBody_('there');
+  const preview =
+    'About to email ' +
+    recipients.size +
+    ' prior players who are not on ' +
+    sheetName +
+    ' (' +
+    PRIOR_SHEETS_FOR_MAILING.join(' + ') +
+    ').\n\n' +
+    'Subject:\n' +
+    subject +
+    '\n\n' +
+    'Message:\n' +
+    sampleBody +
+    '\n\nSend this reminder now?';
+
+  const choice = ui.alert('Preview Saturday reminder', preview, ui.ButtonSet.YES_NO);
+  if (choice !== ui.Button.YES) {
+    ui.alert('Cancelled. No emails sent.');
+    return;
+  }
+
+  let sentCount = 0;
+  recipients.forEach(function (info) {
+    const displayName = info.name || 'there';
+    GmailApp.sendEmail(info.to, subject, buildUpcomingGameReminderBody_(displayName), {
+      name: 'LPT'
+    });
+    sentCount++;
+  });
+
+  Logger.log(
+    'Sent Saturday reminder emails to ' +
+      sentCount +
+      ' recipients (in ' +
+      PRIOR_SHEETS_FOR_MAILING.join(' or ') +
+      ' but not in ' +
+      sheetName +
+      ').'
+  );
+  ui.alert('Sent the Saturday reminder to ' + sentCount + ' people.');
 }
 
 /**
