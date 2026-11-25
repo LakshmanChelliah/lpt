@@ -433,6 +433,9 @@ function buildUpcomingGameReminderBody_(displayName) {
     'Hi ' + displayName + ',',
     '',
     'Quick reminder: ' + LPT_EDITION + ' is this Saturday.',
+    'One table is about to be filled, and the next table is already taking spots.',
+    'After the first table fills, new signups sit at the next table.',
+    '',
     'Event details:',
     '• ' + LPT_EVENT_DATE_LINE,
     '• ' + LPT_NO_REBUY_LINE,
@@ -471,7 +474,7 @@ function sendUpcomingGameReminder() {
     return;
   }
 
-  const subject = LPT_EDITION + ' Reminder - this Saturday at 6:00pm';
+  const subject = LPT_EDITION + ' Reminder - one table is about to fill';
   const sampleBody = buildUpcomingGameReminderBody_('there');
   const preview =
     'About to email ' +
